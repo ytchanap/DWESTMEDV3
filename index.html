@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>洗碗碟机测算工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>洗碗碟机测算工具</h1>
+    <div class="container">
+        <label for="mode">选择计算模式:</label>
+        <select id="mode">
+            <option value="customer">客户自投</option>
+            <option value="gasSale">售气回收</option>
+            <option value="energySale">能源售卖回收</option>
+            <option value="contract">合同能源回收</option>
+        </select>
+
+        <!-- 客户自投模式输入项 -->
+        <div id="customerInputs">
+            <label for="powerCustomer">洗碗碟机总功率 (kW):</label>
+            <input type="number" id="powerCustomer">
+            <label for="dailyUsageCustomer">洗碗碟机日使用时长 (小时):</label>
+            <input type="number" id="dailyUsageCustomer">
+            <label for="annualUsageCustomer">洗碗碟机年使用天数 (天/年):</label>
+            <input type="number" id="annualUsageCustomer">
+            <label for="electricityPriceCustomer">电价 (元/kWh):</label>
+            <input type="number" id="electricityPriceCustomer">
+            <label for="gasSalePriceCustomer">售气价格 (元/m³):</label>
+            <input type="number" id="gasSalePriceCustomer">
+        </div>
+
+        <!-- 售气回收模式输入项 -->
+        <div id="gasSaleInputs" class="hidden">
+            <label for="powerGasSale">洗碗碟机总功率 (kW):</label>
+            <input type="number" id="powerGasSale">
+            <label for="dailyUsageGasSale">洗碗碟机日使用时长 (小时):</label>
+            <input type="number" id="dailyUsageGasSale">
+            <label for="annualUsageGasSale">洗碗碟机年使用天数 (天/年):</label>
+            <input type="number" id="annualUsageGasSale">
+            <label for="gasSalePriceGasSale">售气价格 (元/m³):</label>
+            <input type="number" id="gasSalePriceGasSale">
+            <label for="gasPurchasePriceGasSale">进气价格 (元/m³):</label>
+            <input type="number" id="gasPurchasePriceGasSale">
+            <label for="projectDiscountGasSale">工程优惠 (￥):</label>
+            <input type="number" id="projectDiscountGasSale">
+        </div>
+
+        <!-- 能源售卖回收模式输入项 -->
+        <div id="energySaleInputs" class="hidden">
+            <label for="powerEnergySale">洗碗碟机总功率 (kW):</label>
+            <input type="number" id="powerEnergySale">
+            <label for="dailyUsageEnergySale">洗碗碟机日使用时长 (小时):</label>
+            <input type="number" id="dailyUsageEnergySale">
+            <label for="annualUsageEnergySale">洗碗碟机年使用天数 (天/年):</label>
+            <input type="number" id="annualUsageEnergySale">
+            <label for="energyPriceEnergySale">能源价格 (元/MJ):</label>
+            <input type="number" id="energyPriceEnergySale">
+            <label for="gasPurchasePriceEnergySale">进气价格 (元/m³):</label>
+            <input type="number" id="gasPurchasePriceEnergySale">
+            <label for="projectCostEnergySale">工程及其他费用 (￥):</label>
+            <input type="number" id="projectCostEnergySale">
+            <label for="guaranteedUsageEnergySale">保底用气量 (m³):</label>
+            <input type="number" id="guaranteedUsageEnergySale">
+        </div>
+
+        <!-- 合同能源回收模式输入项 -->
+        <div id="contractInputs" class="hidden">
+            <label for="powerContract">洗碗碟机总功率 (kW):</label>
+            <input type="number" id="powerContract">
+            <label for="dailyUsageContract">洗碗碟机日使用时长 (小时):</label>
+            <input type="number" id="dailyUsageContract">
+            <label for="annualUsageContract">洗碗碟机年使用天数 (天/年):</label>
+            <input type="number" id="annualUsageContract">
+            <label for="electricityPriceContract">电价 (元/kWh):</label>
+            <input type="number" id="electricityPriceContract">
+            <label for="gasSalePriceContract">售气价格 (元/m³):</label>
+            <input type="number" id="gasSalePriceContract">
+            <label for="projectCostContract">工程及其他费用 (￥):</label>
+            <input type="number" id="projectCostContract">
+            <label for="energySavingRatioContract">燃气公司节能分成比例 (%):</label>
+            <input type="number" id="energySavingRatioContract">
+        </div>
+
+        <button onclick="calculate()">计算</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const modeSelect = document.getElementById('mode');
+        const customerInputs = document.getElementById('customerInputs');
+        const gasSaleInputs = document.getElementById('gasSaleInputs');
+        const energySaleInputs = document.getElementById('energySaleInputs');
+        const contractInputs = document.getElementById('contractInputs');
+
+        modeSelect.addEventListener('change', function() {
+            customerInputs.classList.add('hidden');
+            gasSaleInputs.classList.add('hidden');
+            energySaleInputs.classList.add('hidden');
+            contractInputs.classList.add('hidden');
+
+            if (this.value === 'customer') {
+                customerInputs.classList.remove('hidden');
+            } else if (this.value === 'gasSale') {
+                gasSaleInputs.classList.remove('hidden');
+            } else if (this.value === 'energySale') {
+                energySaleInputs.classList.remove('hidden');
+            } else if (this.value === 'contract') {
+                contractInputs.classList.remove('hidden');
+            }
+        });
+
+        function calculate() {
+            const mode = modeSelect.value;
+            let power, dailyUsage, annualUsage, electricityPrice, gasSalePrice, gasPurchasePrice, projectDiscount, projectCost, energyPrice, guaranteedUsage, energySavingRatio;
+
+            if (mode === 'customer') {
+                power = parseFloat(document.getElementById('powerCustomer').value);
+                dailyUsage = parseFloat(document.getElementById('dailyUsageCustomer').value);
+                annualUsage = parseFloat(document.getElementById('annualUsageCustomer').value);
+                electricityPrice = parseFloat(document.getElementById('electricityPriceCustomer').value);
+                gasSalePrice = parseFloat(document.getElementById('gasSalePriceCustomer').value);
+            } else if (mode === 'gasSale') {
+                power = parseFloat(document.getElementById('powerGasSale').value);
+                dailyUsage = parseFloat(document.getElementById('dailyUsageGasSale').value);
+                annualUsage = parseFloat(document.getElementById('annualUsageGasSale').value);
+                gasSalePrice = parseFloat(document.getElementById('gasSalePriceGasSale').value);
+                gasPurchasePrice = parseFloat(document.getElementById('gasPurchasePriceGasSale').value);
+                projectDiscount = parseFloat(document.getElementById('projectDiscountGasSale').value);
+            } else if (mode === 'energySale') {
+                power = parseFloat(document.getElementById('powerEnergySale').value);
+                dailyUsage = parseFloat(document.getElementById('dailyUsageEnergySale').value);
+                annualUsage = parseFloat(document.getElementById('annualUsageEnergySale').value);
+                energyPrice = parseFloat(document.getElementById('energyPriceEnergySale').value);
+                gasPurchasePrice = parseFloat(document.getElementById('gasPurchasePriceEnergySale').value);
+                projectCost = parseFloat(document.getElementById('projectCostEnergySale').value);
+                guaranteedUsage = parseFloat(document.getElementById('guaranteedUsageEnergySale').value);
+            } else if (mode === 'contract') {
+                power = parseFloat(document.getElementById('powerContract').value);
+                dailyUsage = parseFloat(document.getElementById('dailyUsageContract').value);
+                annualUsage = parseFloat(document.getElementById('annualUsageContract').value);
+                electricityPrice = parseFloat(document.getElementById('electricityPriceContract').value);
+                gasSalePrice = parseFloat(document.getElementById('gasSalePriceContract').value);
+                projectCost = parseFloat(document.getElementById('projectCostContract').value);
+                energySavingRatio = parseFloat(document.getElementById('energySavingRatioContract').value);
+            }
+
+            // 验证输入数据
+            if (isNaN(power) || isNaN(dailyUsage) || isNaN(annualUsage)) {
+                alert("请输入有效的数值！");
+                return;
+            }
+
+            let resultText = '';
+
+            if (mode === 'customer') {
+                const annualGasUsage = power * dailyUsage * annualUsage * 3.6 / 36;
+                const energySavingCost = power * dailyUsage * annualUsage * (electricityPrice - (gasSalePrice / 36 * 3.6));
+                let renovationCost = getRenovationCost(power);
+                resultText = `年用气量: ${annualGasUsage.toFixed(2)} m³<br>节能费用: ${energySavingCost.toFixed(2)} 元/年<br>洗碗碟机改造成本: ${renovationCost} 元`;
+            } else if (mode === 'gasSale') {
+                const gasSaleProfit = power * dailyUsage * annualUsage * 3.6 / 36 * (gasSalePrice - gasPurchasePrice);
+                const paybackPeriod = projectDiscount / gasSaleProfit;
+                resultText = `售气毛利: ${gasSaleProfit.toFixed(2)} 元/年<br>回本期: ${paybackPeriod.toFixed(2)} 年`;
+            } else if (mode === 'energySale') {
+                const energySaleProfit = (power * dailyUsage * annualUsage * 3.6 * energyPrice) - (power * dailyUsage * annualUsage * 3.6 / 36 * gasPurchasePrice);
+                const energyPaybackPeriod = (projectCost + getRenovationCost(power)) / energySaleProfit;
+                const guaranteedEnergyProfit = (guaranteedUsage * 36 * energyPrice) - (guaranteedUsage * gasPurchasePrice);
+                const guaranteedPaybackPeriod = (projectCost + getRenovationCost(power)) / guaranteedEnergyProfit;
+                resultText = `洗碗碟机改造成本: ${getRenovationCost(power)} 元<br>售能毛利: ${energySaleProfit.toFixed(2)} 元/年<br>售能回本期: ${energyPaybackPeriod.toFixed(2)} 年<br>保底用气量售能毛利: ${guaranteedEnergyProfit.toFixed(2)} 元/年<br>保底用气量售能回本期: ${guaranteedPaybackPeriod.toFixed(2)} 年`;
+            } else if (mode === 'contract') {
+                const energySavingIncome = power * dailyUsage * annualUsage * (electricityPrice - (gasSalePrice / 36 * 3.6)) * energySavingRatio / 100;
+                const energySavingPaybackPeriod = (projectCost + getRenovationCost(power)) / energySavingIncome;
+                resultText = `洗碗碟机改造成本: ${getRenovationCost(power)} 元<br>节能收入: ${energySavingIncome.toFixed(2)} 元/年<br>节能收入回本期: ${energySavingPaybackPeriod.toFixed(2)} 年`;
+            }
+
+            document.getElementById('result').innerHTML = resultText;
+        }
+
+        function getRenovationCost(power) {
+            if (power >= 0 && power < 40) {
+                return 5000;
+            } else if (power >= 40 && power < 60) {
+                return 10000;
+            } else if (power >= 60 && power < 80) {
+                return 15000;
+            } else if (power >= 80 && power <= 100) {
+                return 20000;
+            }
+            return 0;
+        }
+    </script>
+</body>
+</html>
